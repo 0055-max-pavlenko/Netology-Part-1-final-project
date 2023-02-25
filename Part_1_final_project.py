@@ -85,7 +85,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
               "url": photo_url})
             photo_size = 'o'
             photo_url=''
-        counter += 200
+        counter += 201
         time.sleep(0.5)
     print('\nСоздаем файл с данными о фото')
     with open('photos_info.json', 'wt') as f:
