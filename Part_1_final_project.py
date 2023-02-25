@@ -1,4 +1,4 @@
-﻿import os
+import os
 import requests
 import time
 from datetime import datetime, date
@@ -72,7 +72,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
     time.sleep(0.5)
 
     print(f'Загружаем данные о фото пользователя {owner_backup_id}')
-    while counter<total_number_photos:
+    while counter<=total_number_photos:
         for record in vk.get_user_photos(owner_backup_id, 200, counter)['response']['items']:
             file_name = 'likes_'+str(record['likes']['count'])+'_'+str(record['id'])+'_'+datetime.utcfromtimestamp(record['date']).strftime('%Y_%m_%d_%H-%M-%S')+'.jpg' 
             for size in record['sizes']:
@@ -85,7 +85,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
               "url": photo_url})
             photo_size = 'o'
             photo_url=''
-        counter += 201
+        counter += 200
         time.sleep(0.5)
     print('\nСоздаем файл с данными о фото')
     with open('photos_info.json', 'wt') as f:
