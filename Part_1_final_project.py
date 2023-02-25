@@ -1,4 +1,4 @@
-﻿import os
+﻿
 import requests
 import time
 from datetime import datetime, date
@@ -15,24 +15,16 @@ class YaUploader:
             'Accept':'application/json',
             'Authorization':f'OAuth {token}'
             }
-        requests.put(f"{folder_url}?path=VK_backup_{date.today()}",headers=headers)
+        requests.put(f"{folder_url}?path=VK_backup_via_url_{date.today()}",headers=headers)
     
-
-    def _get_upload_link(self, file_path: str):
-        upload_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
-        headers = {
+    def upload_file_via_url(self, file_path, photo_url):
+        post_folder_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
+        post_headers = {
             'Content-Type':'application/json',
-            'Authorization':'OAuth {}'.format(self.token)
+            'Accept':'application/json',
+            'Authorization':f'OAuth {self.token}'
             }
-        params = {"path":file_path, "overwrite":"true"}
-        response = requests.get(upload_url, headers=headers, params=params)
-        return response.json()
-
-    
-
-    def upload_file_to_disk(self, file_path, file_name):
-        href = self._get_upload_link(file_path=file_path).get("href","")
-        response = requests.put(href, data=open(file_name,'rb'))
+        response=requests.post(f"{post_folder_url}?url={photo_url}&path={file_path}",headers=post_headers)
         return response
 
 
@@ -85,8 +77,9 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
               "url": photo_url})
             photo_size = 'o'
             photo_url=''
-        counter += 200
+        counter += 201
         time.sleep(0.5)
+
     print('\nСоздаем файл с данными о фото')
     with open('photos_info.json', 'wt') as f:
         pprint(final_list_photos, stream=f)
@@ -94,12 +87,9 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
 
     print("Загружаем файлы на ЯндексДиск")
     for record in tqdm(final_list_photos):
-        r = requests.get(record['url'])
-        with open('temporary.jpg', 'wb') as temporary_file:
-            temporary_file.write(r.content)
-        uploader.upload_file_to_disk(file_path=f"VK_backup_{date.today()}/{record['file_name']}", file_name='temporary.jpg')
+        uploader.upload_file_via_url(file_path=f"VK_backup_via_url_{date.today()}", photo_url = record['url'])
     
-    os.remove('temporary.jpg')
+   
 
 
 
