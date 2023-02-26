@@ -16,6 +16,16 @@ class YaUploader:
             'Authorization':f'OAuth {token}'
             }
         requests.put(f"{folder_url}?path=VK_backup_via_url_{date.today()}",headers=headers)
+
+    def _get_upload_link(self, file_path: str):
+        upload_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
+        headers = {
+            'Content-Type':'application/json',
+            'Authorization':'OAuth {}'.format(self.token)
+            }
+        params = {"path":file_path, "overwrite":"true"}
+        response = requests.get(upload_url, headers=headers, params=params)
+        return response.json()
     
     def upload_file_via_url(self, file_path, photo_url):
         post_folder_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
