@@ -36,7 +36,11 @@ class YaUploader:
             }
         
         response = requests.post(f"{folder_url}?url={photo_url}&path={upload_file_path}",headers=post_headers)
-        return response.json()
+        link = response.json()["href"]
+        
+        return link
+
+    
     
    
 
@@ -99,7 +103,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
 
     print("Загружаем файлы на ЯндексДиск")
     for record in tqdm(final_list_photos):
-        
+        print(record['file_name'])
         print(uploader.upload_file_via_url(upload_file_path=f"VK_backup_via_url_{date.today()}/{record['file_name']}", photo_url = record['url']))
         
         
