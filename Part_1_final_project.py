@@ -36,18 +36,9 @@ class YaUploader:
             }
         
         response = requests.post(f"{folder_url}?url={photo_url}&path={upload_file_path}",headers=post_headers)
-        return response
+        return response.json()
     
-    #def upload_file_via_url(self, file_path, photo_url):
-      #  post_folder_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
-      #  post_headers = {
-      #      'Content-Type':'application/json',
-      #      'Accept':'application/json',
-      #      'Authorization':f'OAuth {self.token}'
-      #      }
-      #  response=requests.post(f"{post_folder_url}?url={photo_url}&path={file_path}",headers=post_headers)
-      #  return response
-
+   
 
 class VK:
 
