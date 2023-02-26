@@ -24,14 +24,11 @@ class YaUploader:
             'Accept':'application/json',
             'Authorization':f'OAuth {self.token}'
             }
-        post_params = {"path":upload_file_path, "url":photo_url, "overwrite":"true"}
+        post_params = {"path":upload_file_path, "url":photo_url}
         response = requests.post(folder_url, headers=post_headers, params=post_params)
                 
         return response
 
-    
-    
-   
 
 class VK:
 
@@ -63,6 +60,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
     vk = VK(vk_access_token, vk_access_id)
     uploader = YaUploader(ya_access_token)
     total_number_photos = vk.get_user_photos(owner_backup_id)['response']['count']
+    print(f'Всего фото: {total_number_photos}')
     counter = 0
 
 
@@ -82,7 +80,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
               "url": photo_url})
             photo_size = 'o'
             photo_url=''
-        counter += 201
+        counter += 200
         time.sleep(0.5)
 
     print('\nСоздаем файл с данными о фото')
@@ -93,6 +91,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
     print("Загружаем файлы на ЯндексДиск")
     for record in tqdm(final_list_photos):
         uploader.upload_file_via_url(upload_file_path=f"VK_backup_via_url_{date.today()}/{record['file_name']}", photo_url = record['url'])
+        
         
         
   
