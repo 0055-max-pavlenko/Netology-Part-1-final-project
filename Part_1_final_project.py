@@ -66,13 +66,14 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
     vk = VK(vk_access_token, vk_access_id)
     uploader = YaUploader(ya_access_token)
     total_number_photos = vk.get_user_photos(owner_backup_id)['response']['count']
+    print(f'Всего фото: {total_number_photos}')
     counter = 0
 
 
     time.sleep(0.5)
 
     print(f'Загружаем данные о фото пользователя {owner_backup_id}')
-    while counter<=total_number_photos:
+    while counter<total_number_photos:
         for record in vk.get_user_photos(owner_backup_id, 200, counter)['response']['items']:
             file_name = 'likes_'+str(record['likes']['count'])+'_'+str(record['id'])+'_'+datetime.utcfromtimestamp(record['date']).strftime('%Y_%m_%d_%H-%M-%S')+'.jpg' 
             for size in record['sizes']:
