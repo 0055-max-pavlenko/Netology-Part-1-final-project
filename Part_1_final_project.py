@@ -27,15 +27,15 @@ class YaUploader:
         response = requests.get(upload_url, headers=headers, params=params)
         return response.json()
 
-    def upload_file_via_url(self, file_path, photo_url):
+    def upload_file_via_url(self, upload_file_path, photo_url):
         folder_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
-        headers = {
+        post_headers = {
             'Content-Type':'application/json',
             'Accept':'application/json',
             'Authorization':f'OAuth {self.token}'
             }
         
-        response = requests.post(f"{folder_url}?url = {photo_url}&path={file_path}",headers=headers)
+        response = requests.post(f"{folder_url}?url = {photo_url}&path={upload_file_path}",headers=post_headers)
         return response
     
     #def upload_file_via_url(self, file_path, photo_url):
@@ -108,7 +108,7 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
 
     print("Загружаем файлы на ЯндексДиск")
     for record in tqdm(final_list_photos):
-        print(uploader.upload_file_via_url(file_path=f"VK_backup_via_url_{date.today()}", photo_url = record['url']))
+        print(uploader.upload_file_via_url(upload_file_path=f"VK_backup_via_url_{date.today()}/{record['file_name']}", photo_url = record['url']))
     
    
 
