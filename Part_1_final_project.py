@@ -108,7 +108,8 @@ def Upload_photos_VK_YandexDrive (owner_backup_id, ya_access_token, vk_access_id
 
     print("Загружаем файлы на ЯндексДиск")
     for record in tqdm(final_list_photos):
-        print(uploader.upload_file_via_url(upload_file_path=f"VK_backup_via_url_{date.today()}/{record['file_name']}", photo_url = record['url']))
+        
+        print(uploader.upload_file_via_url(upload_file_path=f"VK_backup_via_url_{date.today()}/{record['file_name']}", photo_url = record['url'].split('?')[0]))
     
    
 
